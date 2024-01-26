@@ -1,26 +1,26 @@
 package com.cassioluciano.desafiogurani;
 
 
-
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -30,7 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
-    private CustomPagerAdapter pagerAdapter;
+    private CustomAdapter customAdapter;
     private List<String> resultList;
 
     private SearchTask searchTask;
@@ -43,45 +43,52 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         resultList = new ArrayList<>();
 
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        pagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), resultList);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        customAdapter = new CustomAdapter(resultList);
+        recyclerView.setAdapter(customAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-        EditText searchEditText = findViewById(R.id.searchEditText);
-        Button searchButton = findViewById(R.id.searchButton);
-
-        searchEditText.addTextChangedListener(new TextWatcher() {
+        SearchView searchView = findViewById(R.id.searchView);
+        setupSearchView(searchView);
+    }
+    private void setupSearchView(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public boolean onQueryTextSubmit(String query) {
+                performSearch(query);
+                searchView.clearFocus();
+                return true;
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Cancela tarefas de pesquisa pendentes antes de iniciar uma nova
-                if (searchTask != null && searchTask.getStatus() == AsyncTask.Status.RUNNING) {
-                    searchTask.cancel(true);
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    moveCursorToEnd(searchView);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String query = editable.toString().trim();
-                searchTask = new SearchTask();
-                searchTask.execute(query);
-            }
         });
+    }
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String query = searchEditText.getText().toString().trim();
-                searchTask = new SearchTask();
-                searchTask.execute(query);
-            }
-        });
+    private void moveCursorToEnd(SearchView searchView) {
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        int length = searchEditText.getText().length();
+        searchEditText.setSelection(length);
+    }
+
+    private void performSearch(String query) {
+        if (searchTask != null && searchTask.getStatus() == AsyncTask.Status.RUNNING) {
+            searchTask.cancel(true);
+        }
+
+        searchTask = new SearchTask();
+        searchTask.execute(query);
     }
 
     private class SearchTask extends AsyncTask<String, Void, List<String>> {
@@ -91,28 +98,17 @@ public class MainActivity extends AppCompatActivity {
             return searchClientes(params[0]);
         }
 
-
         @Override
         protected void onPostExecute(List<String> newResultList) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (newResultList.isEmpty()) {
-                        // Mostrar mensagem de Toast se a lista estiver vazia
-                        Toast.makeText(MainActivity.this, "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
-                        // Limpar a lista
-                        resultList.clear();
-                        // Notificar o adapter após limpar a lista
-                        pagerAdapter.notifyDataSetChanged();
-                    } else {
-                        resultList.clear();
-                        resultList.addAll(newResultList);
-                        pagerAdapter.notifyDataSetChanged();
-                    }
-                }
-            });
-        }
+            resultList.clear();
+            resultList.addAll(newResultList);
 
+            if (newResultList.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
+            }
+
+            customAdapter.notifyDataSetChanged();
+        }
 
         private List<String> searchClientes(String query) {
             SQLiteDatabase db = null;
@@ -149,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("MainActivity", "Índices de coluna inválidos.");
                         }
                     }
-                    cursor.close(); // Fechar o cursor aqui para evitar vazamento
+                    cursor.close();
                 } else {
                     Log.e("MainActivity", "Cursor nulo.");
                 }
@@ -163,22 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
             return newResultList;
         }
-
-
-        private void closeCursor(Cursor cursor) {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-
-//        @Override
-//        protected void onDestroy() {
-//            super.onDestroy();
-//            // Garanta que o AsyncTask seja cancelado ao destruir a atividade
-//            if (searchTask != null && searchTask.getStatus() == AsyncTask.Status.RUNNING) {
-//                searchTask.cancel(true);
-//            }
-//        }
     }
 
     class CustomPagerAdapter extends FragmentPagerAdapter {
@@ -208,6 +188,4 @@ public class MainActivity extends AppCompatActivity {
             return fragmentTitles.get(position);
         }
     }
-
 }
-//Cliente 1 RS

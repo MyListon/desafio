@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/resultsListView"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchButton"
+        android:layout_below="@id/searchView"
         android:layout_marginTop="8dp"
         tools:ignore="NotSibling" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
