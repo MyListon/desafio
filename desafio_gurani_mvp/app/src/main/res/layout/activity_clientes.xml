@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <!-- Layout para Smartphones -->
+    <FrameLayout
+        android:id="@+id/containerClientes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <!-- Adicione um EditText para o termo de pesquisa -->
+        <EditText
+            android:id="@+id/editTextTermoPesquisa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite o termo de pesquisa"
+            android:inputType="text"
+            android:padding="16dp" />
+
+        <!-- Adicione um botão para iniciar a pesquisa -->
+        <Button
+            android:id="@+id/btnPesquisar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:text="Pesquisar" />
+
+        <!-- Adicione um RecyclerView para exibir a lista de clientes -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewClientes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/editTextTermoPesquisa"
+            android:padding="50dp" />
+    </FrameLayout>
+
+    <!-- Layout para Tablets -->
+    <FrameLayout
+        android:id="@+id/containerDetalhesClientes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_toRightOf="@id/containerClientes"
+        android:visibility="gone">
+
+        <!-- Detalhes do Cliente -->
+        <TextView
+            android:id="@+id/textViewNomeCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome do Cliente"
+            android:textSize="18sp"
+            android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewEmailCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email do Cliente"
+            android:textSize="16sp"
+            android:layout_below="@id/textViewNomeCliente"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"/>
+
+    </FrameLayout>
+</RelativeLayout>

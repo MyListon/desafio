@@ -1,0 +1,34 @@
+<!-- item_cliente.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewRazaoSocial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Razão Social"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewNomeFantasia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewRazaoSocial"
+        android:layout_marginTop="8dp"
+        android:text="Nome Fantasia"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewCnpj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNomeFantasia"
+        android:layout_marginTop="8dp"
+        android:text="CNPJ"
+        android:textSize="14sp" />
+</RelativeLayout>
+
+
+

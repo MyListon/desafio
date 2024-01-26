@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <!-- Layout para Smartphones -->
+    <FrameLayout
+        android:id="@+id/containerProdutos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewProdutos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp" />
+    </FrameLayout>
+
+    <!-- Layout para Tablets -->
+    <FrameLayout
+        android:id="@+id/containerDetalhesProdutos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_toRightOf="@id/containerProdutos"
+        android:visibility="gone">
+
+        <!-- Detalhes do Produto -->
+        <TextView
+            android:id="@+id/textViewDescricaoProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descrição do Produto"
+            android:textSize="18sp"
+            android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewCodigoProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Código do Produto"
+            android:textSize="16sp"
+            android:layout_below="@id/textViewDescricaoProduto"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"/>
+
+        <!-- Adicione outros detalhes conforme necessário -->
+    </FrameLayout>
+</RelativeLayout>
