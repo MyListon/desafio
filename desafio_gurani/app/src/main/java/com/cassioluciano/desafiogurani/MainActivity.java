@@ -89,18 +89,46 @@ public class MainActivity extends AppCompatActivity {
     }
     private void deleteItemFromDatabase(int position) {
         SQLiteDatabase db = null;
+        Cursor cursor = null;
 
         try {
+            // Abre o banco de dados para escrita
             db = dbHelper.getWritableDatabase();
-            db.delete(DatabaseHelper.TABLE_CLIENTES, null, null); // Substitua pelos seus critérios de exclusão
-            Log.d("MainActivity", "Item excluído do banco de dados");
+
+            if (db != null) {
+                // Obtenha o ID do item com base na posição na lista
+                String[] columns = {DatabaseHelper.COLUMN_CODIGO_CLIENTE};
+                String selection = "" ;
+                String[] selectionArgs = {  };
+
+                cursor = db.query(DatabaseHelper.TABLE_CLIENTES, columns, selection, selectionArgs, null, null, null);
+
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    int itemId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CODIGO_CLIENTE));
+
+                    // Execute a exclusão com base no ID
+                    db.delete(DatabaseHelper.TABLE_CLIENTES, DatabaseHelper.COLUMN_CODIGO_CLIENTE + " = ?", new String[]{String.valueOf(itemId)});
+
+                    Log.d("MainActivity", "Item excluído do banco de dados");
+                }
+            } else {
+                Log.e("MainActivity", "Falha ao abrir o banco de dados para escrita");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            dbHelper.closeDatabase(db);
-            Log.d("MainActivity", "Closed database");
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null) {
+                dbHelper.closeDatabase(db);
+                Log.d("MainActivity", "Closed database");
+            }
         }
     }
+
+
+
 
 
     private void showPopupMenu(View view, final int position) {
