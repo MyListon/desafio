@@ -76,13 +76,32 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Remove da lista
                         resultList.remove(position);
                         customAdapter.notifyDataSetChanged();
+
+                        // Exclui do banco de dados
+                        deleteItemFromDatabase(position);
                     }
                 })
                 .setNegativeButton("Não", null)
                 .show();
     }
+    private void deleteItemFromDatabase(int position) {
+        SQLiteDatabase db = null;
+
+        try {
+            db = dbHelper.getWritableDatabase();
+            db.delete(DatabaseHelper.TABLE_CLIENTES, null, null); // Substitua pelos seus critérios de exclusão
+            Log.d("MainActivity", "Item excluído do banco de dados");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbHelper.closeDatabase(db);
+            Log.d("MainActivity", "Closed database");
+        }
+    }
+
 
     private void showPopupMenu(View view, final int position) {
         PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
