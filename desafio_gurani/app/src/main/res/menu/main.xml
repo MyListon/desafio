@@ -1,4 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
@@ -7,4 +8,10 @@
         android:title="Pesquisar"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item
+        android:id="@+id/menu_delete"
+        android:title="Excluir" />
+    <!-- Adicione mais itens do menu conforme necessário -->
+
 </menu>

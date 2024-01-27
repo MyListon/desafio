@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -18,14 +17,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
+import android.content.DialogInterface;
+import android.view.MenuItem;
+import android.widget.PopupMenu;
+import androidx.appcompat.app.AlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +47,62 @@ public class MainActivity extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.searchView);
         setupSearchView(searchView);
+
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                // Ação de clique simples
+                // Implemente o que deseja fazer ao clicar em um item
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                // Ação de clique longo
+                showPopupMenu(view, position);
+
+            }
+        }));
+
+
+
     }
+
+
+    private void showDeleteConfirmationDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Confirmação")
+                .setMessage("Deseja realmente excluir este item?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resultList.remove(position);
+                        customAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Não", null)
+                .show();
+    }
+
+    private void showPopupMenu(View view, final int position) {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.inflate(R.menu.context_menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_delete) {
+                    showDeleteConfirmationDialog(position);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
+
+
+
     private void setupSearchView(SearchView searchView) {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -75,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void moveCursorToEnd(SearchView searchView) {
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -109,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
 
             customAdapter.notifyDataSetChanged();
         }
+
+
+
+
 
         private List<String> searchClientes(String query) {
             SQLiteDatabase db = null;
@@ -159,6 +217,11 @@ public class MainActivity extends AppCompatActivity {
 
             return newResultList;
         }
+
+
+
+
+
     }
 
     class CustomPagerAdapter extends FragmentPagerAdapter {

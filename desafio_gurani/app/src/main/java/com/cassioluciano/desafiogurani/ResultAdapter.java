@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+
+
+
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultViewHolder> {
 
     private List<String> resultList;
@@ -49,5 +52,14 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
             resultTextView.setText(result);
         }
     }
+
+
+
+
+
+
 }
+
+
+
 
