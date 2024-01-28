@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private CustomAdapter customAdapter;
-    private List<String> resultList;
+
+    private List<Cliente> resultList = new ArrayList<>();
 
     private SearchTask searchTask;
 
@@ -55,35 +56,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                String item = resultList.get(position);
-                Cliente cliente = new Cliente();
-
-                String[] pairs = item.split(",");
-                for (String pair : pairs) {
-                    String[] keyValue = pair.split(":");
-                    String key = keyValue[0].trim();
-                    String value = keyValue.length > 1 ? keyValue[1].trim() : "";
-
-                    switch (key) {
-                        case "Cod.":
-                            cliente.setCodigo(value);
-                            break;
-                        case "Razão Social":
-                            cliente.setRazaoSocial(value);
-                            break;
-                        case "Nome Fantasia":
-                            cliente.setNomeFantasia(value);
-                            break;
-                        case "CNPJ":
-                            cliente.setCnpj(value);
-                            break;
-                    }
-                }
+                Cliente cliente = resultList.get(position); // Modificação aqui
 
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 intent.putExtra("CLIENTE", cliente);
                 startActivity(intent);
             }
+
 
             @Override
             public void onLongClick(View view, int position) {
@@ -95,39 +74,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         // Obtenha as informações do item na posição especificada
-        String selectedItem = resultList.get(position);
+        Cliente selectedCliente = resultList.get(position);
 
         // Customize a mensagem do diálogo com as informações do item
         builder.setTitle("Confirmação")
-                .setMessage("Deseja realmente excluir o seguinte item?\n\n" + selectedItem)
+                .setMessage("Deseja realmente excluir o seguinte item?\n\n" +
+                        "Cod.: " + selectedCliente.getCodigo() +
+                        ", Razão Social: " + selectedCliente.getRazaoSocial() +
+                        ", Nome Fantasia: " + selectedCliente.getNomeFantasia() +
+                        ", CNPJ: " + selectedCliente.getCnpj())
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Use regex para extrair o código do cliente
-                        Pattern pattern = Pattern.compile("Cod\\.:(\\d+)");
-                        Matcher matcher = pattern.matcher(selectedItem);
+                        // Use o código do cliente para exclusão
+                        String codigo = selectedCliente.getCodigo();
 
-                        if (matcher.find()) {
-                            String codigo = matcher.group(1);
+                        // Remova da lista
+                        resultList.remove(position);
+                        customAdapter.notifyDataSetChanged();
 
-                            // Remova da lista
-                            resultList.remove(position);
-                            customAdapter.notifyDataSetChanged();
-
-                            // Exclua do banco de dados
-                            deleteItemFromDatabase(codigo);
-                        }
+                        // Exclua do banco de dados
+                        deleteItemFromDatabase(codigo);
                     }
                 })
                 .setNegativeButton("Não", null)
                 .show();
     }
+
 
     private void deleteItemFromDatabase(String codigo) {
         SQLiteDatabase db = null;
@@ -204,15 +181,17 @@ public class MainActivity extends AppCompatActivity {
         searchTask.execute(query);
     }
 
-    private class SearchTask extends AsyncTask<String, Void, List<String>> {
+
+
+    private class SearchTask extends AsyncTask<String, Void, List<Cliente>> {
 
         @Override
-        protected List<String> doInBackground(String... params) {
+        protected List<Cliente> doInBackground(String... params) {
             return searchClientes(params[0]);
         }
 
         @Override
-        protected void onPostExecute(List<String> newResultList) {
+        protected void onPostExecute(List<Cliente> newResultList) {
             resultList.clear();
             resultList.addAll(newResultList);
 
@@ -221,12 +200,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
             customAdapter.notifyDataSetChanged();
-        }
 
-        private List<String> searchClientes(String query) {
+            // Se você estiver usando ResultFragment, atualize os resultados lá
+            ResultFragment resultFragment = (ResultFragment) getSupportFragmentManager().findFragmentById(R.id.resultsRecyclerView);
+            if (resultFragment != null) {
+                resultFragment.updateResults(newResultList);
+            }
+        }
+        private List<Cliente> searchClientes(String query) {
             SQLiteDatabase db = null;
             Cursor cursor = null;
-            List<String> newResultList = new ArrayList<>();
+            List<Cliente> newResultList = new ArrayList<>(); // Modificação aqui
 
             try {
                 db = dbHelper.openDatabaseForRead();
@@ -253,9 +237,8 @@ public class MainActivity extends AppCompatActivity {
                             String nomeFantasia = cursor.getString(nomeFantasiaIndex);
                             String cnpj = cursor.getString(cnpjIndex);
 
-                            Log.d("MainActivity", "Razão Social: " + razaoSocial + ", Nome Fantasia: " + nomeFantasia + ", CNPJ: " + cnpj);
-
-                            newResultList.add("Cod.:"+codigo+"\nRazão Social: " + razaoSocial + "\nNome Fantasia: " + nomeFantasia + "\nCNPJ: " + cnpj);
+                            Cliente cliente = new Cliente(codigo, razaoSocial, nomeFantasia, cnpj); // Modificação aqui
+                            newResultList.add(cliente);
                         } else {
                             Log.e("MainActivity", "Índices de coluna inválidos.");
                         }
@@ -274,34 +257,12 @@ public class MainActivity extends AppCompatActivity {
 
             return newResultList;
         }
-
     }
 
-    class CustomPagerAdapter extends FragmentPagerAdapter {
 
-        private final List<Fragment> fragments = new ArrayList<>();
-        private final List<String> fragmentTitles = new ArrayList<>();
 
-        CustomPagerAdapter(FragmentManager fm, List<String> resultList) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-            fragments.add(new ResultFragment(resultList));
-            fragmentTitles.add("Resultados");
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return fragmentTitles.get(position);
-        }
-    }
 }
+
+
+

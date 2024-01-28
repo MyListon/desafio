@@ -128,8 +128,6 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-
-
     public String getCodigo() {
         return editCodigo.getText().toString();
     }

@@ -14,10 +14,28 @@
 
         <!-- Adicione aqui os elementos que representam os dados de cada item -->
         <TextView
-            android:id="@+id/textViewItem"
+            android:id="@+id/txtCodigo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Item Text"/>
+            android:text="Código: " />
+
+        <TextView
+            android:id="@+id/txtRazaoSocial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Razão Social: " />
+
+        <TextView
+            android:id="@+id/txtNomeFantasia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome Fantasia: " />
+
+        <TextView
+            android:id="@+id/txtCnpj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CNPJ: " />
 
     </LinearLayout>
 

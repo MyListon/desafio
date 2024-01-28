@@ -12,9 +12,10 @@ import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    private List<String> resultList;
+    private List<Cliente> resultList;
 
-    public CustomAdapter(List<String> resultList) {
+    // Construtor
+    public CustomAdapter(List<Cliente> resultList) {
         this.resultList = resultList;
     }
 
@@ -25,11 +26,27 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+    // onBindViewHolder method in CustomAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String item = resultList.get(position);
-        holder.textViewItem.setText(item);
+        Cliente cliente = resultList.get(position);
+
+        // Verificar se as TextViews não são nulas
+        if (holder.txtCodigo != null) {
+            holder.txtCodigo.setText("Código: " + cliente.getCodigo());
+        }
+        if (holder.txtRazaoSocial != null) {
+            holder.txtRazaoSocial.setText("Razão Social: " + cliente.getRazaoSocial());
+        }
+        if (holder.txtNomeFantasia != null) {
+            holder.txtNomeFantasia.setText("Nome Fantasia: " + cliente.getNomeFantasia());
+        }
+        if (holder.txtCnpj != null) {
+            holder.txtCnpj.setText("CNPJ: " + cliente.getCnpj());
+        }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -37,11 +54,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewItem;
+        public TextView txtCodigo;
+        public TextView txtRazaoSocial;
+        public TextView txtNomeFantasia;
+        public TextView txtCnpj;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewItem = itemView.findViewById(R.id.textViewItem);
+            txtCodigo = itemView.findViewById(R.id.txtCodigo);
+            txtRazaoSocial = itemView.findViewById(R.id.txtRazaoSocial);
+            txtNomeFantasia = itemView.findViewById(R.id.txtNomeFantasia);
+            txtCnpj = itemView.findViewById(R.id.txtCnpj);
         }
     }
+
 }

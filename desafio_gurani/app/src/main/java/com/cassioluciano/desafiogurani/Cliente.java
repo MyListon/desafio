@@ -8,10 +8,6 @@ public class Cliente implements Serializable {
     private String nomeFantasia;
     private String cnpj;
 
-
-    public Cliente() {
-    }
-
     public Cliente(String codigo, String razaoSocial, String nomeFantasia, String cnpj) {
         this.codigo = codigo;
         this.razaoSocial = razaoSocial;

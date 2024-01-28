@@ -19,44 +19,44 @@ import java.util.List;
 
 public class ResultFragment extends Fragment {
 
-        private List<String> resultList;
-        private RecyclerView resultsRecyclerView;
-        private ResultAdapter adapter;
 
-        public ResultFragment(List<String> resultList) {
-            this.resultList = resultList;
-        }
+    private List<Cliente> resultList;
+    private RecyclerView resultsRecyclerView;
+    private CustomAdapter adapter;
+    public ResultFragment(List<Cliente> resultList) {
+        this.resultList = resultList;
+    }
 
-        public ResultFragment() {
-            // Construtor padrão vazio
-        }
+    public ResultFragment() {
+        // Construtor padrão vazio
+    }
 
-        public static ResultFragment newInstance(List<String> resultList) {
-            return new ResultFragment(resultList);
-        }
+    public static ResultFragment newInstance(List<Cliente> resultList) {
+        return new ResultFragment(resultList);
+    }
 
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_result, container, false);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_result, container, false);
 
-            resultsRecyclerView = view.findViewById(R.id.resultsRecyclerView);
+        resultsRecyclerView = view.findViewById(R.id.resultsRecyclerView);
 
-            // Configure o RecyclerView com um LinearLayoutManager e o adapter
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
-            resultsRecyclerView.setLayoutManager(layoutManager);
+        // Configure o RecyclerView com um LinearLayoutManager e o adapter
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        resultsRecyclerView.setLayoutManager(layoutManager);
 
-            adapter = new ResultAdapter(resultList);
-            resultsRecyclerView.setAdapter(adapter);
+        adapter = new CustomAdapter(resultList);
+        resultsRecyclerView.setAdapter(adapter);
 
-            return view;
-        }
+        return view;
+    }
 
-        public void updateResults(List<String> updatedResults) {
-            resultList.clear();
-            resultList.addAll(updatedResults);
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
+    public void updateResults(List<Cliente> updatedResults) {
+        resultList.clear();
+        resultList.addAll(updatedResults);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
         }
     }
+}
