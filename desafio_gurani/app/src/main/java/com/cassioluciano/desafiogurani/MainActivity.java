@@ -8,21 +8,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.content.DialogInterface;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
@@ -36,6 +31,26 @@ public class MainActivity extends AppCompatActivity {
     private List<Cliente> resultList = new ArrayList<>();
 
     private SearchTask searchTask;
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            Intent intent = new Intent(this, AddClienteActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }));
-
     }
+
+
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -181,8 +197,6 @@ public class MainActivity extends AppCompatActivity {
         searchTask.execute(query);
     }
 
-
-
     private class SearchTask extends AsyncTask<String, Void, List<Cliente>> {
 
         @Override
@@ -258,8 +272,6 @@ public class MainActivity extends AppCompatActivity {
             return newResultList;
         }
     }
-
-
 
 
 }

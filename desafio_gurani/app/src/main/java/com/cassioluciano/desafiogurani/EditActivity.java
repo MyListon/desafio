@@ -58,6 +58,9 @@ public class EditActivity extends AppCompatActivity {
                 // Atualize o banco de dados
                 updateDatabase(codigo, razaoSocial, nomeFantasia, cnpj);
 
+                // Notifique o adaptador sobre as alterações
+                customAdapter.notifyDataSetChanged();
+
                 // Feche a activity
                 finish();
             }
@@ -125,8 +128,6 @@ public class EditActivity extends AppCompatActivity {
             Log.e("EditActivity", "Erro ao criar a instância do DatabaseHelper.");
         }
     }
-
-
 
     public String getCodigo() {
         return editCodigo.getText().toString();
