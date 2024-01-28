@@ -64,10 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-
-
     }
-
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -76,60 +73,38 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Obtenha o código do cliente na posição especificada
+                        String codigo = resultList.get(position).split("\n")[0].split(":")[1].trim();
+
                         // Remove da lista
                         resultList.remove(position);
                         customAdapter.notifyDataSetChanged();
 
                         // Exclui do banco de dados
-                        deleteItemFromDatabase(position);
+                        deleteItemFromDatabase(codigo);
                     }
                 })
                 .setNegativeButton("Não", null)
                 .show();
     }
-    private void deleteItemFromDatabase(int position) {
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
 
+    private void deleteItemFromDatabase(String codigo) {
+        SQLiteDatabase db = null;
         try {
             // Abre o banco de dados para escrita
             db = dbHelper.getWritableDatabase();
-
             if (db != null) {
-                // Obtenha o ID do item com base na posição na lista
-                String[] columns = {DatabaseHelper.COLUMN_CODIGO_CLIENTE};
-                String selection = "" ;
-                String[] selectionArgs = {  };
-
-                cursor = db.query(DatabaseHelper.TABLE_CLIENTES, columns, selection, selectionArgs, null, null, null);
-
-                if (cursor != null && cursor.moveToPosition(position)) {
-                    int itemId = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_CODIGO_CLIENTE));
-
-                    // Execute a exclusão com base no ID
-                    db.delete(DatabaseHelper.TABLE_CLIENTES, DatabaseHelper.COLUMN_CODIGO_CLIENTE + " = ?", new String[]{String.valueOf(itemId)});
-
-                    Log.d("MainActivity", "Item excluído do banco de dados");
-                }
-            } else {
-                Log.e("MainActivity", "Falha ao abrir o banco de dados para escrita");
+                // Execute a exclusão com base no código
+                db.delete(DatabaseHelper.TABLE_CLIENTES, DatabaseHelper.COLUMN_CODIGO_CLIENTE + " = ?", new String[]{codigo});
+                Log.d("MainActivity", "Item excluído do banco de dados");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                dbHelper.closeDatabase(db);
-                Log.d("MainActivity", "Closed database");
-            }
+            dbHelper.closeDatabase(db);
+            Log.d("MainActivity", "Closed database");
         }
     }
-
-
-
-
 
     private void showPopupMenu(View view, final int position) {
         PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
@@ -147,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-
-
 
     private void setupSearchView(SearchView searchView) {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -174,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void moveCursorToEnd(SearchView searchView) {
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -211,10 +182,6 @@ public class MainActivity extends AppCompatActivity {
             customAdapter.notifyDataSetChanged();
         }
 
-
-
-
-
         private List<String> searchClientes(String query) {
             SQLiteDatabase db = null;
             Cursor cursor = null;
@@ -234,18 +201,20 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
+                        int codigoIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_CODIGO_CLIENTE);
                         int razaoSocialIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_RAZAO_SOCIAL);
                         int nomeFantasiaIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_NOME_FANTASIA);
                         int cnpjIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_CNPJ);
 
                         if (razaoSocialIndex >= 0 && nomeFantasiaIndex >= 0 && cnpjIndex >= 0) {
+                            String codigo = cursor.getString(codigoIndex);
                             String razaoSocial = cursor.getString(razaoSocialIndex);
                             String nomeFantasia = cursor.getString(nomeFantasiaIndex);
                             String cnpj = cursor.getString(cnpjIndex);
 
                             Log.d("MainActivity", "Razão Social: " + razaoSocial + ", Nome Fantasia: " + nomeFantasia + ", CNPJ: " + cnpj);
 
-                            newResultList.add("Razão Social: " + razaoSocial + "\nNome Fantasia: " + nomeFantasia + "\nCNPJ: " + cnpj);
+                            newResultList.add("Cod.:"+codigo+"\nRazão Social: " + razaoSocial + "\nNome Fantasia: " + nomeFantasia + "\nCNPJ: " + cnpj);
                         } else {
                             Log.e("MainActivity", "Índices de coluna inválidos.");
                         }
@@ -264,10 +233,6 @@ public class MainActivity extends AppCompatActivity {
 
             return newResultList;
         }
-
-
-
-
 
     }
 
