@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.content.DialogInterface;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
@@ -68,26 +71,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        // Obtenha as informações do item na posição especificada
+        String selectedItem = resultList.get(position);
+
+        // Customize a mensagem do diálogo com as informações do item
         builder.setTitle("Confirmação")
-                .setMessage("Deseja realmente excluir este item?")
+                .setMessage("Deseja realmente excluir o seguinte item?\n\n" + selectedItem)
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Obtenha o código do cliente na posição especificada
-                        String codigo = resultList.get(position).split("\n")[0].split(":")[1].trim();
+                        // Use regex para extrair o código do cliente
+                        Pattern pattern = Pattern.compile("Cod\\.:(\\d+)");
+                        Matcher matcher = pattern.matcher(selectedItem);
 
-                        // Remove da lista
-                        resultList.remove(position);
-                        customAdapter.notifyDataSetChanged();
+                        if (matcher.find()) {
+                            String codigo = matcher.group(1);
 
-                        // Exclui do banco de dados
-                        deleteItemFromDatabase(codigo);
+                            // Remova da lista
+                            resultList.remove(position);
+                            customAdapter.notifyDataSetChanged();
+
+                            // Exclua do banco de dados
+                            deleteItemFromDatabase(codigo);
+                        }
                     }
                 })
                 .setNegativeButton("Não", null)
                 .show();
     }
-
+    
     private void deleteItemFromDatabase(String codigo) {
         SQLiteDatabase db = null;
         try {
