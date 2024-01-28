@@ -1,6 +1,7 @@
 package com.cassioluciano.desafiogurani;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,12 +52,37 @@ public class MainActivity extends AppCompatActivity {
         SearchView searchView = findViewById(R.id.searchView);
         setupSearchView(searchView);
 
-
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                // Ação de clique simples
-                // Implemente o que deseja fazer ao clicar em um item
+                String item = resultList.get(position);
+                Cliente cliente = new Cliente();
+
+                String[] pairs = item.split(",");
+                for (String pair : pairs) {
+                    String[] keyValue = pair.split(":");
+                    String key = keyValue[0].trim();
+                    String value = keyValue.length > 1 ? keyValue[1].trim() : "";
+
+                    switch (key) {
+                        case "Cod.":
+                            cliente.setCodigo(value);
+                            break;
+                        case "Razão Social":
+                            cliente.setRazaoSocial(value);
+                            break;
+                        case "Nome Fantasia":
+                            cliente.setNomeFantasia(value);
+                            break;
+                        case "CNPJ":
+                            cliente.setCnpj(value);
+                            break;
+                    }
+                }
+
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra("CLIENTE", cliente);
+                startActivity(intent);
             }
 
             @Override
@@ -68,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         }));
 
     }
+
+
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -100,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Não", null)
                 .show();
     }
-    
+
     private void deleteItemFromDatabase(String codigo) {
         SQLiteDatabase db = null;
         try {

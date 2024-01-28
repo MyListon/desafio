@@ -35,8 +35,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Executar a criação da tabela
         db.execSQL(createTableQuery);
 
-
-
         Log.d("DatabaseHelper", "onCreate called");
     }
 
@@ -54,8 +52,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Lógica para atualização do banco, se necessário
-        Log.d("DatabaseHelper", "onUpgrade called");
+        Log.d("DatabaseHelper", "onUpgrade called********");
     }
+
+
 
     // Método para abrir o banco de dados para leitura
     public SQLiteDatabase openDatabaseForRead() throws SQLException {

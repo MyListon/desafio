@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_codigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="Código" />
+
+    <EditText
+        android:id="@+id/edit_razao_social"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Razão Social" />
+
+    <EditText
+        android:id="@+id/edit_nome_fantasia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome Fantasia" />
+
+    <EditText
+        android:id="@+id/edit_cnpj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="CNPJ" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar Edição" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar" />
+</LinearLayout>
