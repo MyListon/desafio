@@ -18,13 +18,13 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".AddClienteActivity"
+            android:name=".view.AddClienteActivity"
             android:exported="false" />
         <activity
-            android:name=".EditActivity"
+            android:name=".view.EditActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
