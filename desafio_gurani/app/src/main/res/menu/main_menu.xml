@@ -1,9 +1,31 @@
+<!-- menu/main_menu.xml -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_add"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Adicionar"
-        app:showAsAction="always" />
-</menu>
 
+    <item
+        android:id="@+id/menu_hamburger"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Menu"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/action_add"
+                android:icon="@android:drawable/ic_input_add"
+                android:title="Adicionar"
+                app:showAsAction="never" />
+            <!-- Adicione mais itens de submenu conforme necessário -->
+
+            <item
+                android:id="@+id/action_search_product"
+                android:icon="@android:drawable/ic_menu_search"
+                android:title="Pesquisar Produto"
+                app:showAsAction="always" />
+
+        </menu>
+
+    </item>
+
+    <!-- Outros itens do menu principal -->
+
+</menu>
