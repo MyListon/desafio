@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.utils;
+package com.myliston.desafio.utils;
 
 import android.content.Context;
 import android.view.GestureDetector;

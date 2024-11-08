@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.view.adapters;
+package com.myliston.desafio.view.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cassioluciano.desafiogurani.R;
-import com.cassioluciano.desafiogurani.model.Product;
+import com.myliston.desafio.R;
+import com.myliston.desafio.model.Product;
 
 import java.util.List;
 

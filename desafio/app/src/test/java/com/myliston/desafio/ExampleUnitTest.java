@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani;
+package com.myliston.desafio;
 
 import org.junit.Test;
 

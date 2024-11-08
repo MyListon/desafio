@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.view.activities;
+package com.myliston.desafio.view.activities;
 
 
 import android.content.Intent;
@@ -23,12 +23,12 @@ import android.view.MenuItem;
 import android.widget.PopupMenu;
 import androidx.appcompat.app.AlertDialog;
 
-import com.cassioluciano.desafiogurani.view.adapters.CustomAdapter;
-import com.cassioluciano.desafiogurani.utils.DatabaseHelper;
-import com.cassioluciano.desafiogurani.R;
-import com.cassioluciano.desafiogurani.utils.RecyclerTouchListener;
-import com.cassioluciano.desafiogurani.view.fragments.ResultFragment;
-import com.cassioluciano.desafiogurani.model.Cliente;
+import com.myliston.desafio.view.adapters.CustomAdapter;
+import com.myliston.desafio.utils.DatabaseHelper;
+import com.myliston.desafio.R;
+import com.myliston.desafio.utils.RecyclerTouchListener;
+import com.myliston.desafio.view.fragments.ResultFragment;
+import com.myliston.desafio.model.Cliente;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;

@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.view.activities;
+package com.myliston.desafio.view.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cassioluciano.desafiogurani.R;
-import com.cassioluciano.desafiogurani.model.Cliente;
-import com.cassioluciano.desafiogurani.presenter.AddClientePresenter;
-import com.cassioluciano.desafiogurani.view.AddClienteView;
+import com.myliston.desafio.R;
+import com.myliston.desafio.model.Cliente;
+import com.myliston.desafio.presenter.AddClientePresenter;
+import com.myliston.desafio.view.AddClienteView;
 
 public class AddClienteActivity extends AppCompatActivity implements AddClienteView {
 

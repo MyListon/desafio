@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.view.activities;
+package com.myliston.desafio.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.cassioluciano.desafiogurani.R;
-import com.cassioluciano.desafiogurani.model.Product;
-import com.cassioluciano.desafiogurani.view.adapters.ProductAdapter;
+import com.myliston.desafio.R;
+import com.myliston.desafio.model.Product;
+import com.myliston.desafio.view.adapters.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

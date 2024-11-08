@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.view.fragments;
+package com.myliston.desafio.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cassioluciano.desafiogurani.view.adapters.CustomAdapter;
-import com.cassioluciano.desafiogurani.R;
-import com.cassioluciano.desafiogurani.model.Cliente;
+import com.myliston.desafio.view.adapters.CustomAdapter;
+import com.myliston.desafio.R;
+import com.myliston.desafio.model.Cliente;
 
 import java.util.List;
 

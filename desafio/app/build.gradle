@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.cassioluciano.desafiogurani'
+    namespace 'com.myliston.desafio'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.cassioluciano.desafiogurani"
+        applicationId "com.myliston.desafio"
         minSdk 27
         targetSdk 33
         versionCode 1

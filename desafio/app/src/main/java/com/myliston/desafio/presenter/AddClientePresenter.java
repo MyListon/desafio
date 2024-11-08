@@ -1,7 +1,7 @@
-package com.cassioluciano.desafiogurani.presenter;
+package com.myliston.desafio.presenter;
 
-import com.cassioluciano.desafiogurani.contract.AddClienteContract;
-import com.cassioluciano.desafiogurani.model.Cliente;
+import com.myliston.desafio.contract.AddClienteContract;
+import com.myliston.desafio.model.Cliente;
 
 public class AddClientePresenter implements AddClienteContract.Presenter {
 

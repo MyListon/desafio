@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.utils;
+package com.myliston.desafio.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,7 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.cassioluciano.desafiogurani.model.Product;
+import com.myliston.desafio.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;

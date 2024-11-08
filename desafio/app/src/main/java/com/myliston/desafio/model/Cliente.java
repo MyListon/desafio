@@ -1,4 +1,4 @@
-package com.cassioluciano.desafiogurani.model;
+package com.myliston.desafio.model;
 
 import java.io.Serializable;
 

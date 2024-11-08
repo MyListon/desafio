@@ -1,6 +1,6 @@
-package com.cassioluciano.desafiogurani.contract;
+package com.myliston.desafio.contract;
 
-import com.cassioluciano.desafiogurani.model.Cliente;
+import com.myliston.desafio.model.Cliente;
 
 public interface AddClienteContract {
 
